@@ -7,8 +7,10 @@ import FormFooter from "./FormFooter";
 import { storeUserInfo } from "@/services/auth.service";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const PersonalForm = () => {
+  const router = useRouter();
   const [phone, setPhone] = useState<string>("");
   const [formData, setFormData] = useState<PersonalType>({
     first_name: "",
@@ -49,7 +51,7 @@ const PersonalForm = () => {
       toast.success(data.message, {
         position: "top-right",
       });
-      storeUserInfo(data.access_token);
+      if (data.access_token) storeUserInfo(data.access_token);
       setFormData({
         first_name: "",
         last_name: "",
@@ -63,6 +65,7 @@ const PersonalForm = () => {
         profession: "",
       });
       setPhone("");
+      router.push("/sign-in");
     } catch (error) {
       console.error("Error:", error);
     }
